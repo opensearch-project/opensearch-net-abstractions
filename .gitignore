@@ -63,7 +63,7 @@ build/tools/*
 docs/node_modules
 doc/Help
 
-/src/Nest.Tests.Unit/*.ncrunchproject
+/src/Osc.Tests.Unit/*.ncrunchproject
 *.ncrunchproject
 Cache
 YamlCache
