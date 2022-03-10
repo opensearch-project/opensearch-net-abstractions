@@ -24,3 +24,22 @@
 *  specific language governing permissions and limitations
 *  under the License.
 */
+
+using System;
+using System.Collections.Generic;
+using OpenSearch.OpenSearch.Managed;
+
+namespace OpenSearch.OpenSearch.Ephemeral
+{
+	public interface IEphemeralCluster
+	{
+		ICollection<Uri> NodesUris(string hostName = null);
+		string GetCacheFolderName();
+		bool CachingAndCachedHomeExists();
+	}
+
+	public interface IEphemeralCluster<out TConfiguration> : IEphemeralCluster, ICluster<TConfiguration>
+		where TConfiguration : EphemeralClusterConfiguration
+	{
+	}
+}

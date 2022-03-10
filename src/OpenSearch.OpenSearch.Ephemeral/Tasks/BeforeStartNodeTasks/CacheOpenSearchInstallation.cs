@@ -24,3 +24,33 @@
 *  specific language governing permissions and limitations
 *  under the License.
 */
+
+using System.IO;
+using OpenSearch.OpenSearch.Managed.ConsoleWriters;
+
+namespace OpenSearch.OpenSearch.Ephemeral.Tasks.BeforeStartNodeTasks
+{
+	public class CacheOpenSearchInstallation : ClusterComposeTask
+	{
+		public override void Run(IEphemeralCluster<EphemeralClusterConfiguration> cluster)
+		{
+			if (!cluster.ClusterConfiguration.CacheOpenSearchHomeInstallation) return;
+
+			var fs = cluster.FileSystem;
+			var cachedOpenSearchHomeFolder = Path.Combine(fs.LocalFolder, cluster.GetCacheFolderName());
+			var cachedOpenSearchYaml = Path.Combine(cachedOpenSearchHomeFolder, "config", "opensearch.yml");
+			if (File.Exists(cachedOpenSearchYaml))
+			{
+				cluster.Writer?.WriteDiagnostic(
+					$"{{{nameof(CacheOpenSearchInstallation)}}} cached home already exists [{cachedOpenSearchHomeFolder}]");
+				return;
+			}
+
+			var source = fs.OpenSearchHome;
+			var target = cachedOpenSearchHomeFolder;
+			cluster.Writer?.WriteDiagnostic(
+				$"{{{nameof(CacheOpenSearchInstallation)}}} caching {{{source}}} to [{target}]");
+			CopyFolder(source, target, false);
+		}
+	}
+}

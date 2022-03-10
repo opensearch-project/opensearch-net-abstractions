@@ -24,3 +24,13 @@
 *  specific language governing permissions and limitations
 *  under the License.
 */
+
+namespace OpenSearch.Stack.ArtifactsApi
+{
+	public enum ArtifactBuildState
+	{
+		Released,
+		Snapshot,
+		BuildCandidate
+	}
+}

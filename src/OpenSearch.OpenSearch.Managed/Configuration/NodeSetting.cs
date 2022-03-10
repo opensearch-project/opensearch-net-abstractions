@@ -24,3 +24,26 @@
 *  specific language governing permissions and limitations
 *  under the License.
 */
+
+namespace OpenSearch.OpenSearch.Managed.Configuration
+{
+	public struct NodeSetting
+	{
+		public string Key { get; }
+		public string Value { get; }
+
+		/// <summary>
+		///     Stores for which opensearch version range this setting is applicable
+		/// </summary>
+		public string VersionRange { get; }
+
+		public NodeSetting(string key, string value, string range)
+		{
+			Key = key;
+			Value = value;
+			VersionRange = range;
+		}
+
+		public override string ToString() => $"{Key}={Value}";
+	}
+}

@@ -24,3 +24,19 @@
 *  specific language governing permissions and limitations
 *  under the License.
 */
+
+using System;
+
+namespace OpenSearch.OpenSearch.Managed
+{
+	public class OpenSearchCleanExitException : Exception
+	{
+		public OpenSearchCleanExitException(string message) : base(message)
+		{
+		}
+
+		public OpenSearchCleanExitException(string message, Exception innerException) : base(message, innerException)
+		{
+		}
+	}
+}

@@ -24,3 +24,26 @@
 *  specific language governing permissions and limitations
 *  under the License.
 */
+
+using System;
+
+namespace OpenSearch.OpenSearch.Ephemeral
+{
+	/// <summary>
+	///     Hints to <see cref="EphemeralClusterConfiguration" /> what features the cluster to be started should have.
+	///     It's up to the <see cref="EphemeralClusterComposer{TConfiguration}" /> to actually bootstrap these features.
+	/// </summary>
+	[Flags]
+	public enum ClusterFeatures
+	{
+		/// <summary>
+		///     No features
+		/// </summary>
+		None = 1 << 0,
+
+		/// <summary>
+		///     SSL/TLS for HTTP and Transport layers
+		/// </summary>
+		SSL = 1 << 3,
+	}
+}

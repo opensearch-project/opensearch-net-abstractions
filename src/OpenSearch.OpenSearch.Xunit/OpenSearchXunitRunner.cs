@@ -24,3 +24,13 @@
 *  specific language governing permissions and limitations
 *  under the License.
 */
+
+using OpenSearch.OpenSearch.Ephemeral;
+
+namespace OpenSearch.OpenSearch.Xunit
+{
+	public static class OpenSearchXunitRunner
+	{
+		public static IEphemeralCluster<XunitClusterConfiguration> CurrentCluster { get; internal set; }
+	}
+}

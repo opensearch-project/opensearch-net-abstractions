@@ -24,3 +24,13 @@
 *  specific language governing permissions and limitations
 *  under the License.
 */
+
+namespace OpenSearch.OpenSearch.Ephemeral
+{
+	public static class SecurityRealms
+	{
+		public const string FileRealm = "file1";
+
+		public const string PkiRealm = "pki1";
+	}
+}
