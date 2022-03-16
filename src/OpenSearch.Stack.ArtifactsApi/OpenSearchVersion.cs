@@ -152,7 +152,7 @@ namespace OpenSearch.Stack.ArtifactsApi
 				return true;
 
 			//Semver can only match snapshot version with ranges on the same major and minor
-			//anything else fails but we want to know e.g 2.4.5-SNAPSHOT satisfied by <5.0.0;
+			//anything else fails but we want to know e.g 1.0.0-SNAPSHOT satisfied by 1.0.0;
 			var wholeVersion = $"{Major}.{Minor}.{Patch}";
 			return versionRange.IsSatisfied(wholeVersion);
 		}
