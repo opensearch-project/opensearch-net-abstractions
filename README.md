@@ -1,3 +1,6 @@
+![OpenSearch logo](OpenSearch.svg)
+
+
 # OpenSearch .NET abstractions
 
 You've reached the home repository for several auxiliary projects from the .NET team within OpenSearch.

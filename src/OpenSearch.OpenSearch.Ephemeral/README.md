@@ -23,7 +23,7 @@ The easiest way to get started is by simply passing the version you want to be b
 `Start` starts the `OpenSearchNode`'s and waits for them to be started. The default overload waits `2 minutes`.
 
 ```csharp
-using (var cluster = new EphemeralCluster("6.0.0"))
+using (var cluster = new EphemeralCluster("1.0.0"))
 {
 	cluster.Start();
 }
@@ -34,7 +34,7 @@ If you want the full configuration possibilities inject a `EphemeralClusterConfi
 
 ```csharp
 var plugins = new OpenSearchPlugins(OpenSearchPlugin.RepositoryAzure, OpenSearchPlugin.IngestAttachment);
-var config = new EphemeralClusterConfiguration("6.2.3", ClusterFeatures.None, plugins, numberOfNodes: 2);
+var config = new EphemeralClusterConfiguration("1.0.0", ClusterFeatures.None, plugins, numberOfNodes: 2);
 using (var cluster = new EphemeralCluster(config))
 {
 	cluster.Start();
