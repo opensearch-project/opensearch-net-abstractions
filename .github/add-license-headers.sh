@@ -1,7 +1,7 @@
 #!/bin/bash
 script_path=$(dirname $(realpath -s $0))/../
 
-LEN=$(wc -c .github/license-header.txt | awk '{print $1}')
+LEN=$(wc -c $script_path.github/license-header.txt | awk '{print $1}')
 
 function add_license () {
     (find "$script_path" -name $1 | grep -v "/bin/" | grep -v "/obj/" )|while read fname; do

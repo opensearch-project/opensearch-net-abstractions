@@ -10,17 +10,19 @@ fi
 set -o errexit
 set -o pipefail
 
+script_path=$(dirname $(realpath -s $0))/../
+
 TOP=$(cd "$(dirname "$0")/.." >/dev/null && pwd)
-NLINES=$(wc -l .github/license-header.txt | awk '{print $1}')
+NLINES=$(wc -l $script_path.github/license-header.txt | awk '{print $1}')
 
 function check_license_header {
     local f
     f=$1
-    if [[ $f == *.fs ]] && ! diff -a --strip-trailing-cr .github/license-header-fs.txt <(head -$NLINES "$f") >/dev/null; then
+    if [[ $f == *.fs ]] && ! diff -a --strip-trailing-cr $script_path.github/license-header-fs.txt <(head -$NLINES "$f") >/dev/null; then
         echo $f
         echo "check-license-headers: error: '$f' does not have required license header, see 'diff -u .github/license-header-fs.txt <(head -$NLINES $f)'"
         return 1
-    elif [[ $f != *.fs ]] && ! diff -a --strip-trailing-cr .github/license-header.txt <(head -$NLINES "$f") >/dev/null; then
+    elif [[ $f != *.fs ]] && ! diff -a --strip-trailing-cr $script_path.github/license-header.txt <(head -$NLINES "$f") >/dev/null; then
         echo "check-license-headers: error: '$f' does not have required license header, see 'diff -u .github/license-header.txt <(head -$NLINES $f)'"
         return 1
     else
