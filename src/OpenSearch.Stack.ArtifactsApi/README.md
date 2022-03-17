@@ -50,7 +50,7 @@ To aid with discoverability we ship with some statics so you do not need to gues
 
 ```csharp
 Product.OpenSearch;
-Product.Kibana;
+Product.OpenSearchDashboards;
 Product.OpenSearchPlugin(OpenSearchPlugin.AnalysisIcu);
 ```
 

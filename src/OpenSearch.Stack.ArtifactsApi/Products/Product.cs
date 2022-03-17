@@ -60,7 +60,7 @@ namespace OpenSearch.Stack.ArtifactsApi.Products
 
 		public static Product OpenSearch { get; } = From("opensearch");
 
-		public static Product Kibana { get; } = From("kibana", platformInZipAfter: "1.0.0");
+		public static Product OpenSearchDashboards { get; } = From("opensearch-dashboards", platformInZipAfter: "1.0.0");
 
 		public static Product From(string product, SubProduct subProduct = null,
 			OpenSearchVersion platformInZipAfter = null) =>
