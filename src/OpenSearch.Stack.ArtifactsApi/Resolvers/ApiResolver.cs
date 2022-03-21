@@ -41,7 +41,7 @@ namespace OpenSearch.Stack.ArtifactsApi.Resolvers
 	public static class ApiResolver
 	{
 		// TODO: update string when working on artifacts API
-		private const string ArtifactsApiUrl = "https://artifacts-api.elastic.co/v1/";
+		private const string ArtifactsApiUrl = "https://artifacts-api.opensearch.org/v1/";
 
 		private static readonly ConcurrentDictionary<string, bool> Releases = new ConcurrentDictionary<string, bool>();
 
@@ -53,7 +53,7 @@ namespace OpenSearch.Stack.ArtifactsApi.Resolvers
 
 		private static Regex BuildHashRegex { get; } =
 			// TODO: update string when working on artifacts API
-			new Regex(@"https://(?:snapshots|staging).elastic.co/(\d+\.\d+\.\d+-([^/]+)?)");
+			new Regex(@"https://(?:snapshots|staging).opensearch.org/(\d+\.\d+\.\d+-([^/]+)?)");
 
 		public static string FetchJson(string path)
 		{

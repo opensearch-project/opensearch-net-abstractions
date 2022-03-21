@@ -94,7 +94,6 @@ namespace OpenSearch.Stack.ArtifactsApi.Resolvers
 
 				if (!tokens[0].Equals(p, StringComparison.CurrentCultureIgnoreCase)) continue;
 				if (!tokens[1].Equals(version.ToString(), StringComparison.CurrentCultureIgnoreCase)) continue;
-				// https://snapshots.elastic.co/7.4.0-677857dd/downloads/elasticsearch-plugins/analysis-icu/analysis-icu-7.4.0-SNAPSHOT.zip
 				var buildHash = ApiResolver.GetBuildHash(kv.Value.DownloadUrl);
 				artifact = new Artifact(product, version, kv.Value, buildHash);
 			}

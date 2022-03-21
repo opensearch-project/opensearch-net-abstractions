@@ -34,8 +34,7 @@ namespace OpenSearch.Stack.ArtifactsApi.Resolvers
 {
 	public static class ReleasedVersionResolver
 	{
-		//https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.1.0-linux-x86_64.tar.gz
-		private const string ArtifactsUrl = "https://artifacts.elastic.co";
+		private const string ArtifactsUrl = "https://artifacts.opensearch.org";
 
 		public static bool TryResolve(Product product, Version version, OSPlatform os, out Artifact artifact)
 		{

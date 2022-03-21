@@ -34,10 +34,8 @@ namespace OpenSearch.Stack.ArtifactsApi.Resolvers
 	public static class StagingVersionResolver
 	{
 		// TODO: update string when working on artifacts API
-		private const string StagingUrlFormat = "https://staging.elastic.co/{0}-{1}";
+		private const string StagingUrlFormat = "https://staging.opensearch.org/{0}-{1}";
 
-		// https://staging.elastic.co/7.2.0-957e3089/downloads/elasticsearch/elasticsearch-7.2.0-linux-x86_64.tar.gz
-		// https://staging.elastic.co/7.2.0-957e3089/downloads/elasticsearch-plugins/analysis-icu/analysis-icu-7.2.0.zip
 		public static bool TryResolve(Product product, Version version, string buildHash, out Artifact artifact)
 		{
 			artifact = null;

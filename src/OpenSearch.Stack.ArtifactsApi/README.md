@@ -13,7 +13,7 @@ Supports:
     * `commit_hash:version` a build candidate for a version
 
 3. Released versions
-    * `MAJOR.MINOR.PATH` where `MAJOR` is still supported as defined by the EOL policy of Elastic.
+    * `MAJOR.MINOR.PATH` where `MAJOR` is still supported as defined by the EOL policy of OpenSearch.
     * Note if the version exists but is not yet released it will resolve as a build candidate
     
 
