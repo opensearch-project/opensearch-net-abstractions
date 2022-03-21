@@ -2,12 +2,12 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))"/>
   <PropertyGroup>
-    <Authors>Elastic and contributors</Authors>
-    <Copyright>Elasticsearch BV</Copyright>
+    <Authors>OpenSearch Project and contributors</Authors>
+    <Copyright>OpenSearch</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/elastic/elasticsearch-net-abstractions</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/elastic/elasticsearch-net-abstractions</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/elastic/elasticsearch-net-abstractions/releases</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/opensearch-project/opensearch-net-abstractions</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/opensearch-project/opensearch-net-abstractions</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/opensearch-project/opensearch-net-abstractions/releases</PackageReleaseNotes>
 
 
     <SignAssembly>true</SignAssembly>
