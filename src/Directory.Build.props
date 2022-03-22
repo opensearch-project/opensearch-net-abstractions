@@ -25,9 +25,9 @@
       <Pack>True</Pack>
       <PackagePath>nuget-icon.png</PackagePath>
     </Content>
-    <None Include="../../License.txt" CopyToOutputDirectory="PreserveNewest">
+    <None Include="../../LICENSE.txt" CopyToOutputDirectory="PreserveNewest">
       <Pack>True</Pack>
-      <PackagePath>License.txt</PackagePath>
+      <PackagePath>LICENSE.txt</PackagePath>
     </None>
   </ItemGroup>
 
