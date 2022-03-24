@@ -53,7 +53,7 @@ take additional `onNext/onError/onCompleted` handlers.
 A  node can also be started using a `NodeConfiguration`
 
 ```csharp
-var clusterConfiguration = new ClusterConfiguration(version, openSearchHome);
+var clusterConfiguration = new ClusterConfiguration(version, ServerType.OpenSearch, openSearchHome);
 var nodeConfiguration = new NodeConfiguration(clusterConfiguration, 9200)
 {
 	ShowOpenSearchOutputAfterStarted = false,
@@ -75,7 +75,7 @@ A simple abstraction that can can start and stop one or more `OpenSearchNodes` a
 be started
 
 ```csharp
-var clusterConfiguration = new ClusterConfiguration(version, openSearchHome, numberOfNodes: 2);
+var clusterConfiguration = new ClusterConfiguration(version, ServerType.OpenSearch, openSearchHome, numberOfNodes: 2);
 using (var cluster = new OpenSearchCluster(clusterConfiguration))
 {
 	cluster.Start();

@@ -53,15 +53,15 @@ namespace OpenSearch.OpenSearch.Managed.Configuration
 
 	public class ClusterConfiguration : ClusterConfiguration<NodeFileSystem>
 	{
-		public ClusterConfiguration(OpenSearchVersion version, string openSearchHome, int numberOfNodes = 1)
-			: base(version, (v, s) => new NodeFileSystem(v, openSearchHome), numberOfNodes, null)
+		public ClusterConfiguration(OpenSearchVersion version, ServerType serverType, string openSearchHome, int numberOfNodes = 1)
+			: base(version, serverType, (v, s) => new NodeFileSystem(v, openSearchHome), numberOfNodes, null)
 		{
 		}
 
-		public ClusterConfiguration(OpenSearchVersion version,
+		public ClusterConfiguration(OpenSearchVersion version, ServerType serverType,
 			Func<OpenSearchVersion, string, NodeFileSystem> fileSystem = null, int numberOfNodes = 1,
 			string clusterName = null)
-			: base(version, fileSystem ?? ((v, s) => new NodeFileSystem(v, s)), numberOfNodes, clusterName)
+			: base(version, serverType, fileSystem ?? ((v, s) => new NodeFileSystem(v, s)), numberOfNodes, clusterName)
 		{
 		}
 	}
@@ -79,14 +79,14 @@ namespace OpenSearch.OpenSearch.Managed.Configuration
 		/// </param>
 		/// <param name="numberOfNodes">The number of nodes in the cluster</param>
 		/// <param name="clusterName">The name of the cluster</param>
-		public ClusterConfiguration(OpenSearchVersion version, Func<OpenSearchVersion, string, TFileSystem> fileSystem,
+		public ClusterConfiguration(OpenSearchVersion version, ServerType serverType, Func<OpenSearchVersion, string, TFileSystem> fileSystem,
 			int numberOfNodes = 1, string clusterName = null)
 		{
 			if (fileSystem == null) throw new ArgumentException(nameof(fileSystem));
 
 			ClusterName = clusterName;
 			Version = version;
-			Artifact = version.Artifact(Product.OpenSearch);
+			Artifact = version.Artifact(Product.From("opensearch", serverType: serverType));
 			FileSystem = fileSystem(Version, ClusterName);
 			NumberOfNodes = numberOfNodes;
 

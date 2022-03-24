@@ -43,14 +43,10 @@ Library to fetch the url and metadata for released artifacts.
 Supports:
 
 1. Snapshots builds
-    * `1.0.0-SNAPSHOT`
-    * `latest-MAJOR` where `MAJOR` is a single integer representing the major you want a snapshot for
+    * `latest-MAJOR` where `MAJOR` is a single integer representing the major you want
     * `latest` latest greatest 
 
-2. BuildCandidates
-    * `commit_hash:version` a build candidate for a version
-
-3. Released versions
+2. Released versions
     * `MAJOR.MINOR.PATH` where `MAJOR` is still supported as defined by the EOL policy of OpenSearch.
     * Note if the version exists but is not yet released it will resolve as a build candidate
     

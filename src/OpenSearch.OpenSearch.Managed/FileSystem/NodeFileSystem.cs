@@ -57,12 +57,26 @@ namespace OpenSearch.OpenSearch.Managed.FileSystem
 		protected static string BinarySuffix => IsMono || Path.DirectorySeparatorChar == '/' ? "" : ".bat";
 
 		/// <inheritdoc />
-		public string Binary => Path.Combine(OpenSearchHome, "bin", "opensearch") + BinarySuffix;
+		public string Binary
+		{
+			get
+			{
+				if (Artifact.ServerType == ServerType.OpenSearch)
+					return Path.Combine(OpenSearchHome, "bin", "opensearch") + BinarySuffix;
+				return Path.Combine(OpenSearchHome, "bin", "elasticsearch") + BinarySuffix;
+			}
+		}
 
 		/// <inheritdoc />
-		public string PluginBinary =>
-			Path.Combine(OpenSearchHome, "bin", "opensearch-plugin") +
-			BinarySuffix;
+		public string PluginBinary
+		{
+			get
+			{
+				if (Artifact.ServerType == ServerType.OpenSearch)
+					return Path.Combine(OpenSearchHome, "bin", "opensearch-plugin") + BinarySuffix;
+				return Path.Combine(OpenSearchHome, "bin", "elasticsearch-plugin") + BinarySuffix;
+			}
+		}
 
 		/// <inheritdoc />
 		public string OpenSearchHome { get; }

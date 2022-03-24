@@ -37,7 +37,7 @@ namespace OpenSearch.OpenSearch.Managed.Configuration
 	{
 		private Action<StartArguments> _defaultStartArgs = s => { };
 
-		public NodeConfiguration(OpenSearchVersion version, int? port = null) : this(new ClusterConfiguration(version),
+		public NodeConfiguration(OpenSearchVersion version, int? port = null) : this(new ClusterConfiguration(version, ServerType.DEFAULT),
 			port)
 		{
 		}

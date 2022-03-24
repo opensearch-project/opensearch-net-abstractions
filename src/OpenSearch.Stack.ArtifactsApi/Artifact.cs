@@ -40,7 +40,13 @@ namespace OpenSearch.Stack.ArtifactsApi
 		internal Artifact(Product product, Version version, string downloadUrl, ArtifactBuildState state,
 			string buildHash)
 		{
-			ProductName = product.ProductName;
+			ServerType = product.ServerType;
+			switch (ServerType)
+			{
+				case ServerType.OpenSearch: ProductName = "opensearch"; break; // actually = product.ProductName
+				case ServerType.OpenDistro: ProductName = "opendistroforelasticsearch"; break;
+				case ServerType.ElasticSearch: ProductName = "elasticsearch"; break;
+			}
 			Version = version;
 			DownloadUrl = product?.PatchDownloadUrl(downloadUrl);
 			State = state;
@@ -91,6 +97,7 @@ namespace OpenSearch.Stack.ArtifactsApi
 		}
 
 		// ReSharper disable UnusedAutoPropertyAccessor.Global
+		public ServerType ServerType { get; }
 		public string ProductName { get; }
 		public Version Version { get; }
 		public string DownloadUrl { get; }

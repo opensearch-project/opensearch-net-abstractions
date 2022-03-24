@@ -5,12 +5,8 @@ Library to fetch the url and metadata for released artifacts.
 Supports:
 
 1. Snapshots builds
-    * `1.0.0-SNAPSHOT`
     * `latest-MAJOR` where `MAJOR` is a single integer representing the major you want a snapshot for
     * `latest` latest greatest 
-
-2. BuildCandidates
-    * `commit_hash:version` a build candidate for a version
 
 3. Released versions
     * `MAJOR.MINOR.PATH` where `MAJOR` is still supported as defined by the EOL policy of OpenSearch.
