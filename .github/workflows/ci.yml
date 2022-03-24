@@ -1,10 +1,5 @@
-name: Always be deploying
-
+name: Build and publish snapshot packages
 on:
-  pull_request:
-    paths-ignore: 
-      - 'README.md'
-      - '.editorconfig'
   push:
     paths-ignore:
       - 'README.md'
@@ -28,12 +23,41 @@ jobs:
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '5.0.100'
-        
+  
     - run: ./build.sh build -s true
       name: Build
+
     - run: ./build.sh generatepackages -s true
       name: Generate local nuget packages
+
     - uses: actions/upload-artifact@v2
       with:
         name: nuget-packages
         path: build/output/*
+
+    - run: ./build.sh validatepackages -s true
+      name: Validate *.npkg files that were created
+
+    - name: Publish packages to GitHub package repository
+      if: github.event_name == 'push' && startswith(github.ref, 'refs/heads/main')
+      shell: bash
+      run:  |
+         OWNER=$GITHUB_REPOSITORY_OWNER
+         NUGET_REPO="https://nuget.pkg.github.com/$OWNER/index.json"
+         dotnet nuget add source --username $OWNER --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "$NUGET_REPO"  
+         dotnet nuget push 'build/output/*.nupkg' -s github -k ${{secrets.GITHUB_TOKEN}} --skip-duplicate --no-symbols true
+  
+  delete-stale-pre-release-packages:
+    runs-on: ubuntu-18.04
+    needs: build
+    if: github.event_name == 'push' && startswith(github.ref, 'refs/heads/main')
+    strategy:
+      matrix:
+        # Is this list the same as the nuget packages generated in opensearch-net-abstractions repo?
+        package: [OpenSearch.OpenSearch.Ephemeral, OpenSearch.OpenSearch.Managed, OpenSearch.OpenSearch.Xunit, OpenSearch.Stack.ArtifactsApi]
+    steps:
+    - uses: actions/delete-package-versions@v3
+      with: 
+        package-name: ${{ matrix.package }}
+        min-versions-to-keep: 1
+        delete-only-pre-release-versions: "true"
