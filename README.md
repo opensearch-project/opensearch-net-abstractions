@@ -17,6 +17,8 @@
 
 You've reached the home repository for several auxiliary projects from the .NET team within OpenSearch.
 
+Pre-release packages of these projects are available at [OpenSearch NuGet Package Repository](https://www.github.com/opensearch-project/packages). See [GitHub documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#installing-a-package) for instructions on how to access them.
+
 Current projects:
 
 ### [OpenSearch.OpenSearch.Managed](src/OpenSearch.OpenSearch.Managed/README.md)
