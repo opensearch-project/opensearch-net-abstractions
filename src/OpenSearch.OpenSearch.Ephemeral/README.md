@@ -34,7 +34,7 @@ If you want the full configuration possibilities inject a `EphemeralClusterConfi
 
 ```csharp
 var plugins = new OpenSearchPlugins(OpenSearchPlugin.RepositoryAzure, OpenSearchPlugin.IngestAttachment);
-var config = new EphemeralClusterConfiguration("1.0.0", ClusterFeatures.None, plugins, numberOfNodes: 2);
+var config = new EphemeralClusterConfiguration("1.0.0", ServerType.OpenSearch, ClusterFeatures.None, plugins, numberOfNodes: 2);
 using (var cluster = new EphemeralCluster(config))
 {
 	cluster.Start();

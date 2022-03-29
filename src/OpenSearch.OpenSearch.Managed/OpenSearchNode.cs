@@ -43,7 +43,7 @@ namespace OpenSearch.OpenSearch.Managed
 		private readonly ManualResetEvent _startedHandle = new ManualResetEvent(false);
 
 		public OpenSearchNode(OpenSearchVersion version, string openSearchHome = null)
-			: this(new NodeConfiguration(new ClusterConfiguration(version,
+			: this(new NodeConfiguration(new ClusterConfiguration(version, ServerType.DEFAULT,
 				(v, s) => new NodeFileSystem(v, openSearchHome))))
 		{
 		}

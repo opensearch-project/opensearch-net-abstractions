@@ -39,10 +39,11 @@ namespace OpenSearch.Stack.ArtifactsApi.Products
 
 		private Product(string productName) => ProductName = productName;
 
-		protected Product(string productName, SubProduct relatedProduct,
+		protected Product(string productName, SubProduct relatedProduct, ServerType serverType,
 			OpenSearchVersion platformVersionSuffixAfter = null) : this(productName)
 		{
 			SubProduct = relatedProduct;
+			ServerType = serverType;
 			PlatformSuffixAfter = platformVersionSuffixAfter ?? DefaultIncludePlatformSuffix;
 		}
 
@@ -54,6 +55,8 @@ namespace OpenSearch.Stack.ArtifactsApi.Products
 
 		public string ProductName { get; }
 
+		public ServerType ServerType { get; }
+
 		public bool PlatformDependent => SubProduct?.PlatformDependent ?? true;
 
 		public OpenSearchVersion PlatformSuffixAfter { get; }
@@ -62,10 +65,10 @@ namespace OpenSearch.Stack.ArtifactsApi.Products
 
 		public static Product OpenSearchDashboards { get; } = From("opensearch-dashboards", platformInZipAfter: "1.0.0");
 
-		public static Product From(string product, SubProduct subProduct = null,
+		public static Product From(string product, SubProduct subProduct = null, ServerType serverType = ServerType.DEFAULT,
 			OpenSearchVersion platformInZipAfter = null) =>
-			CachedProducts.GetOrAdd(subProduct == null ? $"{product}" : $"{product}/{subProduct.SubProductName}",
-				k => new Product(product, subProduct, platformInZipAfter));
+			CachedProducts.GetOrAdd(subProduct == null ? $"{product}-{serverType}" : $"{product}/{subProduct.SubProductName}",
+				k => new Product(product, subProduct, serverType, platformInZipAfter));
 
 		public static Product OpenSearchPlugin(OpenSearchPlugin plugin) => From("opensearch-plugins", plugin);
 

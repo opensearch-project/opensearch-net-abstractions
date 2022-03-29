@@ -38,8 +38,8 @@ namespace OpenSearch.OpenSearch.Ephemeral.Tasks.BeforeStartNodeTasks
 
 			var fs = cluster.FileSystem;
 			var cachedOpenSearchHomeFolder = Path.Combine(fs.LocalFolder, cluster.GetCacheFolderName());
-			var cachedOpenSearchYaml = Path.Combine(cachedOpenSearchHomeFolder, "config", "opensearch.yml");
-			if (File.Exists(cachedOpenSearchYaml))
+			var cachedOpenSearchConfig = Path.Combine(cachedOpenSearchHomeFolder, "config");
+			if (File.Exists(cachedOpenSearchConfig))
 			{
 				cluster.Writer?.WriteDiagnostic(
 					$"{{{nameof(CacheOpenSearchInstallation)}}} cached home already exists [{cachedOpenSearchHomeFolder}]");

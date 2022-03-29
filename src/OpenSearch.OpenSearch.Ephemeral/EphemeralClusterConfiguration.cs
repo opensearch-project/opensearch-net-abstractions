@@ -39,15 +39,15 @@ namespace OpenSearch.OpenSearch.Ephemeral
 {
 	public class EphemeralClusterConfiguration : ClusterConfiguration<EphemeralFileSystem>
 	{
-		public EphemeralClusterConfiguration(OpenSearchVersion version, OpenSearchPlugins plugins = null,
+		public EphemeralClusterConfiguration(OpenSearchVersion version, ServerType serverType, OpenSearchPlugins plugins = null,
 			int numberOfNodes = 1)
-			: this(version, ClusterFeatures.None, plugins, numberOfNodes)
+			: this(version, serverType, ClusterFeatures.None, plugins, numberOfNodes)
 		{
 		}
 
-		public EphemeralClusterConfiguration(OpenSearchVersion version, ClusterFeatures features,
+		public EphemeralClusterConfiguration(OpenSearchVersion version, ServerType serverType, ClusterFeatures features,
 			OpenSearchPlugins plugins = null, int numberOfNodes = 1)
-			: base(version, (v, s) => new EphemeralFileSystem(v, s), numberOfNodes, EphemeralClusterName)
+			: base(version, serverType, (v, s) => new EphemeralFileSystem(v, s), numberOfNodes, EphemeralClusterName)
 		{
 			Features = features;
 

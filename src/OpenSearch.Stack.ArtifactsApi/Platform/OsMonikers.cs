@@ -26,8 +26,8 @@
 */
 
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
 namespace OpenSearch.Stack.ArtifactsApi.Platform
 {
 	internal static class OsMonikers
@@ -53,15 +53,47 @@ namespace OpenSearch.Stack.ArtifactsApi.Platform
 				$"{RuntimeInformation.OSDescription} is currently not supported please open an issue @opensearch-project/opensearch-net-abstractions");
 		}
 
-
-		public static string CurrentPlatformArchiveExtension()
+		/// <summary>
+		/// Maps from current os and architecture to a suffix used for tagging platform-specific OpenSearch releases.
+		/// </summary>
+		/// <returns></returns>
+		public static string GetOpenSearchPlatformMoniker(OSPlatform platform, Architecture architecture)
 		{
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return "zip";
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) return "tar.gz";
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return "tar.gz";
+			if (platform == OSPlatform.Windows)
+			{
+				if (architecture == Architecture.X64) return "windows-x64";
+				if (architecture == Architecture.X86) return "windows-x86";
+			}
 
+			if (platform == OSPlatform.OSX)
+			{
+				if (architecture == Architecture.X64) return "macos-x64";
+				if (architecture == Architecture.Arm64) return "macos-arm64";
+
+			}
+
+			if (platform == OSPlatform.Linux)
+			{
+				if (architecture == Architecture.X64) return "linux-x64";
+				if (architecture == Architecture.Arm64) return "linux-arm64";
+			}
 			throw new Exception(
 				$"{RuntimeInformation.OSDescription} is currently not supported please open an issue @opensearch-project/opensearch-net-abstractions");
+		}
+
+		public static string GetPlatformArchiveExtension(OSPlatform platform)
+		{
+			if (platform == OSPlatform.Linux) return "tar.gz";
+			if (platform == OSPlatform.OSX) return "tar.gz";
+			if (platform == OSPlatform.Windows) return "zip";
+			throw new Exception(
+				$"{RuntimeInformation.OSDescription} is currently not supported please open an issue @opensearch-project/opensearch-net-abstractions");
+
+		}
+		public static string CurrentPlatformArchiveExtension()
+		{
+			var platform = CurrentPlatform();
+			return GetPlatformArchiveExtension(platform);
 		}
 
 		public static string CurrentPlatformPackageSuffix()

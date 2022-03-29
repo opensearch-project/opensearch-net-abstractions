@@ -25,26 +25,13 @@
 *  under the License.
 */
 
-using System;
-using OpenSearch.Stack.ArtifactsApi.Platform;
-using OpenSearch.Stack.ArtifactsApi.Products;
-using Version = SemVer.Version;
-
-namespace OpenSearch.Stack.ArtifactsApi.Resolvers
+namespace OpenSearch.Stack.ArtifactsApi
 {
-	public static class StagingVersionResolver
+	public enum ServerType
 	{
-		public static bool TryResolve(Product product, Version version, string buildHash, out Artifact artifact)
-		{
-			artifact = null;
-			// Tests are not supposed to run on any staging server except OpenSearch
-			if (product.ServerType != ServerType.OpenSearch)
-				throw new ArgumentOutOfRangeException($"Tests are not supposed to run on staging {product.ServerType} regardless of version");
-
-			// Only Linux and only x64 is supported now
-			var downloadUrl = $"https://ci.opensearch.org/ci/dbc/distribution-build-opensearch/{version}/latest/linux/x64/dist/opensearch/opensearch-{version}-linux-x64.{product.Extension}";
-			artifact = new Artifact(product, version, downloadUrl, ArtifactBuildState.BuildCandidate, buildHash);
-			return true;
-		}
+		OpenSearch,
+		OpenDistro,
+		ElasticSearch,
+		DEFAULT = OpenSearch
 	}
 }

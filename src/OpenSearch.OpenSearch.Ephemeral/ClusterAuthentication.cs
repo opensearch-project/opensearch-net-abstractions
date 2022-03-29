@@ -35,12 +35,12 @@ namespace OpenSearch.OpenSearch.Ephemeral
 		/// <summary>
 		///     Administrator credentials
 		/// </summary>
-		public static Credentials Admin => new Credentials {Username = "opensearch_admin", Role = "admin"};
+		public static Credentials Admin => new Credentials {Username = "admin", Role = "admin"};
 
 		/// <summary>
 		///     User credentials
 		/// </summary>
-		public static Credentials User => new Credentials {Username = "opensearch_user", Role = "user"};
+		public static Credentials User => new Credentials {Username = "admin", Role = "admin"};
 
 		/// <summary>
 		///     Credentials for all users

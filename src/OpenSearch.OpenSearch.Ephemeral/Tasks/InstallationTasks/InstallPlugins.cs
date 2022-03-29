@@ -86,15 +86,14 @@ namespace OpenSearch.OpenSearch.Ephemeral.Tasks.InstallationTasks
 
 				cluster.Writer?.WriteDiagnostic(
 					$"{{{nameof(Run)}}} attempting install [{plugin.SubProductName}] as it's not OOTB: {{{plugin.ShippedByDefaultAsOf}}} and valid for {v}: {{{plugin.IsValid(v)}}}");
-				//var installParameter = v.ReleaseState == ReleaseState.Released ? plugin.Moniker : UseHttpPluginLocation(cluster.Writer, fs, plugin, v);
-				var installParameter = UseHttpPluginLocation(cluster.Writer, fs, plugin, v);
+				
 				if (!Directory.Exists(fs.ConfigPath)) Directory.CreateDirectory(fs.ConfigPath);
 				ExecuteBinary(
 					cluster.ClusterConfiguration,
 					cluster.Writer,
 					fs.PluginBinary,
 					$"install opensearch plugin: {plugin.SubProductName}",
-					"install --batch", installParameter);
+					"install --batch", plugin.SubProductName);
 
 				CopyConfigDirectoryToHomeCacheConfigDirectory(cluster, plugin);
 			}
@@ -120,37 +119,6 @@ namespace OpenSearch.OpenSearch.Ephemeral.Tasks.InstallationTasks
 		{
 			var pluginFolder = Path.Combine(fileSystem.OpenSearchHome, "plugins", folderName);
 			return Directory.Exists(pluginFolder);
-		}
-
-		private static string UseHttpPluginLocation(IConsoleLineHandler writer, INodeFileSystem fileSystem,
-			OpenSearchPlugin plugin, OpenSearchVersion v)
-		{
-			var downloadLocation = Path.Combine(fileSystem.LocalFolder, $"{plugin.SubProductName}-{v}.zip");
-			DownloadPluginSnapshot(writer, downloadLocation, plugin, v);
-			//transform downloadLocation to file uri and use that to install from
-			return new Uri(new Uri("file://"), downloadLocation).AbsoluteUri;
-		}
-
-		private static void DownloadPluginSnapshot(IConsoleLineHandler writer, string downloadLocation,
-			OpenSearchPlugin plugin, OpenSearchVersion v)
-		{
-			if (File.Exists(downloadLocation)) return;
-			var artifact = v.Artifact(Product.OpenSearchPlugin(plugin));
-			var downloadUrl = artifact.DownloadUrl;
-			writer?.WriteDiagnostic(
-				$"{{{nameof(DownloadPluginSnapshot)}}} downloading [{plugin.SubProductName}] from {{{downloadUrl}}}");
-			try
-			{
-				DownloadFile(downloadUrl, downloadLocation);
-				writer?.WriteDiagnostic(
-					$"{{{nameof(DownloadPluginSnapshot)}}} downloaded [{plugin.SubProductName}] to {{{downloadLocation}}}");
-			}
-			catch (Exception)
-			{
-				writer?.WriteDiagnostic(
-					$"{{{nameof(DownloadPluginSnapshot)}}} download failed! [{plugin.SubProductName}] from {{{downloadUrl}}}");
-				throw;
-			}
 		}
 	}
 }

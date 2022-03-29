@@ -51,7 +51,8 @@ namespace OpenSearch.OpenSearch.Ephemeral
 			new DownloadOpenSearchVersion(),
 			new UnzipOpenSearch(),
 			new SetOpenSearchBundledJdkJavaHome(),
-			new InstallPlugins()
+			new InstallPlugins(),
+			new InitialConfiguration()
 		};
 
 		protected static IEnumerable<IClusterComposeTask> BeforeStart { get; } = new List<IClusterComposeTask>

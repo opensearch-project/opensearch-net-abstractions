@@ -28,6 +28,7 @@
 using System;
 using System.Linq;
 using OpenSearch.OpenSearch.Managed.ConsoleWriters;
+using OpenSearch.Stack.ArtifactsApi;
 
 namespace OpenSearch.OpenSearch.Ephemeral.Tasks.ValidationTasks
 {
@@ -36,6 +37,10 @@ namespace OpenSearch.OpenSearch.Ephemeral.Tasks.ValidationTasks
 		public override void Run(IEphemeralCluster<EphemeralClusterConfiguration> cluster)
 		{
 			var requestedVersion = cluster.ClusterConfiguration.Version;
+			if (cluster.ClusterConfiguration.Artifact.ServerType == ServerType.OpenDistro)
+				//All supported version of OpenDistro are based on ElasticSearch v.7.10.2
+				requestedVersion = OpenSearchVersion.From("7.10.2");
+
 
 			cluster.Writer?.WriteDiagnostic(
 				$"{{{nameof(ValidateRunningVersion)}}} validating the cluster is running the requested version: {requestedVersion}");
