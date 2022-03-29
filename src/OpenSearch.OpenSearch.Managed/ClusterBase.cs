@@ -134,6 +134,17 @@ namespace OpenSearch.OpenSearch.Managed
 				var nodeExceptions = Nodes.Select(n => n.LastSeenException).Where(e => e != null).ToList();
 				writer?.WriteError(
 					$"{{{GetType().Name}.{nameof(Start)}}} cluster did not start after {waitForStarted}");
+				throw new AggregateException($"Not all nodes started after waiting {waitForStarted}", nodeExceptions);
+			}
+
+			Started = Nodes.All(n => n.NodeStarted);
+			if (!Started)
+			{
+				var nodeExceptions = Nodes.Select(n => n.LastSeenException).Where(e => e != null).ToList();
+				var message = $"{{{GetType().Name}.{nameof(Start)}}} cluster did not start successfully";
+				var seeLogsMessage = SeeLogsMessage(message);
+				writer?.WriteError(seeLogsMessage);
+				throw new AggregateException(seeLogsMessage, nodeExceptions);
 			}
 
 			try
