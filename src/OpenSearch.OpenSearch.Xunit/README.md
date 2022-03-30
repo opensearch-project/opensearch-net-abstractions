@@ -77,11 +77,11 @@ public class ExampleTest : IClusterFixture<MyTestCluster>
 			var connectionPool = new StaticConnectionPool(nodes);
 			var settings = new ConnectionSettings(connectionPool)
 				.EnableDebugMode();
-			return new ElasticClient(settings);
+			return new OpenSearchClient(settings);
 		);
 	}
 
-	private ElasticClient Client { get; }
+	private OpenSearchClient Client { get; }
 
 	/// <summary> [I] marks an integration test (like [Fact] would for plain Xunit) </summary>
 	[I] public void SomeTest()
