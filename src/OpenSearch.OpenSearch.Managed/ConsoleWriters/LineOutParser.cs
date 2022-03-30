@@ -58,7 +58,7 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 		private static readonly Regex ConsoleLineParser =
 			new Regex(@"\[(?<date>.*?)\]\[(?<level>.*?)\](?:\[(?<section>.*?)\])(?: \[(?<node>.*?)\])? (?<message>.+)");
 
-		private static readonly Regex PortParser = new Regex(@"bound_address(opensearch)? {.+\:(?<port>\d+)}");
+		private static readonly Regex PortParser = new Regex(@"bound_address(es)?(opensearch)? {.+\:(?<port>\d+)}");
 
 		//[2016-09-26T11:43:17,475][INFO ][o.e.n.Node               ] [readonly-node-a9c5f4] version[5.0.0-beta1], pid[13172], build[7eb6260/2016-09-20T23:10:37.942Z], OS[Windows 10/10.0/amd64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_101/25.101-b13]
 		private static readonly Regex InfoParser =
@@ -93,11 +93,11 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 		{
 			port = 0;
 			var inHttpSection =
-				section == "o.e.h.HttpServer"
+				section == "o.o.h.HttpServer"
 				|| section == "http"
-				|| section == "o.e.h.AbstractHttpServerTransport"
-				|| section == "o.e.h.n.Netty4HttpServerTransport"
-				|| section == "o.e.x.s.t.n.SecurityNetty4HttpServerTransport";
+				|| section == "o.o.h.AbstractHttpServerTransport"
+				|| section == "o.o.h.n.Netty4HttpServerTransport"
+				|| section == "o.o.x.s.t.n.SecurityNetty4HttpServerTransport";
 			if (!inHttpSection) return false;
 
 			if (string.IsNullOrWhiteSpace(message)) return false;
@@ -112,7 +112,7 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 
 		public static bool TryParseNodeInfo(string section, string message, out string version, out int? pid)
 		{
-			var inNodeSection = section == "o.e.n.Node" || section == "node";
+			var inNodeSection = section == "o.o.n.Node" || section == "node";
 
 			version = null;
 			pid = null;
