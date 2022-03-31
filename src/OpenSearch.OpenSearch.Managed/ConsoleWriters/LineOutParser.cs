@@ -30,7 +30,7 @@ using System.Text.RegularExpressions;
 
 namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 {
-	public static class LineOutParser
+	public class LineOutParser
 	{
 /*
 [2016-09-26T11:43:17,314][INFO ][o.e.n.Node               ] [readonly-node-a9c5f4] initializing ...
@@ -55,16 +55,16 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 [2016-09-26T11:43:22,179][INFO ][o.e.n.Node               ] [readonly-node-a9c5f4] initialized
 [2016-09-26T11:43:22,180][INFO ][o.e.n.Node               ] [readonly-node-a9c5f4] starting ...
 */
-		private static readonly Regex ConsoleLineParser =
+		private readonly Regex ConsoleLineParser =
 			new Regex(@"\[(?<date>.*?)\]\[(?<level>.*?)\](?:\[(?<section>.*?)\])(?: \[(?<node>.*?)\])? (?<message>.+)");
 
-		private static readonly Regex PortParser = new Regex(@"bound_address(es)?(opensearch)? {.+\:(?<port>\d+)}");
+		private readonly Regex PortParser = new Regex(@"bound_address(es)?(opensearch)? {.+\:(?<port>\d+)}");
 
 		//[2016-09-26T11:43:17,475][INFO ][o.e.n.Node               ] [readonly-node-a9c5f4] version[5.0.0-beta1], pid[13172], build[7eb6260/2016-09-20T23:10:37.942Z], OS[Windows 10/10.0/amd64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_101/25.101-b13]
-		private static readonly Regex InfoParser =
+		private readonly Regex InfoParser =
 			new Regex(@"version\[(?<version>.*)\], pid\[(?<pid>.*)\], build\[(?<build>.+)\]");
 
-		public static bool TryParse(string line,
+		public bool TryParse(string line,
 			out string date, out string level, out string section, out string node, out string message,
 			out bool started)
 		{
@@ -83,13 +83,13 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 			return true;
 		}
 
-		private static bool TryGetStartedConfirmation(string section, string message)
+		private bool TryGetStartedConfirmation(string section, string message, string node)
 		{
 			var inNodeSection = section == "o.e.n.Node" || section == "node";
 			return inNodeSection && message == "started";
 		}
 
-		public static bool TryGetPortNumber(string section, string message, out int port)
+		public bool TryGetPortNumber(string section, string message, out int port)
 		{
 			port = 0;
 			var inHttpSection =
@@ -110,7 +110,7 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 			return true;
 		}
 
-		public static bool TryParseNodeInfo(string section, string message, out string version, out int? pid)
+		public bool TryParseNodeInfo(string section, string message, out string version, out int? pid)
 		{
 			var inNodeSection = section == "o.o.n.Node" || section == "node";
 

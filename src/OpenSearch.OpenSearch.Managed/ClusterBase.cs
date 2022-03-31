@@ -115,9 +115,12 @@ namespace OpenSearch.OpenSearch.Managed
 
 		public IDisposable Start() => Start(TimeSpan.FromMinutes(2));
 
-		public IDisposable Start(TimeSpan waitForStarted) =>
-			Start(new LineHighlightWriter(Nodes.Select(n => n.NodeConfiguration.DesiredNodeName).ToArray()),
-				waitForStarted);
+		public IDisposable Start(TimeSpan waitForStarted)
+		{
+			var nodes = Nodes.Select(n => n.NodeConfiguration.DesiredNodeName).ToArray();
+			var lineHighlightWriter = new LineHighlightWriter(nodes, new LineOutParser());
+			return Start(lineHighlightWriter, waitForStarted);
+		}
 
 		public IDisposable Start(IConsoleLineHandler writer, TimeSpan waitForStarted)
 		{

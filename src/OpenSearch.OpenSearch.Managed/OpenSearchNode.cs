@@ -210,6 +210,7 @@ namespace OpenSearch.OpenSearch.Managed
 
 		protected override bool KeepBufferingLines(LineOut c)
 		{
+			var lineOutParser = new LineOutParser();
 			//if the node is already started only keep buffering lines while we have a writer and the nodeconfiguration wants output after started
 			if (NodeStarted)
 			{
@@ -218,17 +219,18 @@ namespace OpenSearch.OpenSearch.Managed
 				return keepBuffering;
 			}
 
-			var parsed = LineOutParser.TryParse(c?.Line, out _, out _, out var section, out _, out var message,
+			var parsed = lineOutParser.TryParse(c?.Line, out _, out _, out var section, out _, out var message,
 				out var started);
 
 			if (!parsed) return Writer != null;
 
-			if (JavaProcessId == null && LineOutParser.TryParseNodeInfo(section, message, out var version, out var pid))
+			if (JavaProcessId == null && lineOutParser.TryParseNodeInfo(section, message, out var version, out var pid))
 			{
 				JavaProcessId = pid;
 				Version = version;
 			}
-			else if (LineOutParser.TryGetPortNumber(section, message, out var port))
+
+			else if (lineOutParser.TryGetPortNumber(section, message, out var port))
 			{
 				Port = port;
 				var dp = NodeConfiguration.DesiredPort;
