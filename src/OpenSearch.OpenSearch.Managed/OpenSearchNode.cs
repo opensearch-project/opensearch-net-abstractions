@@ -94,6 +94,13 @@ namespace OpenSearch.OpenSearch.Managed
 			if (!string.IsNullOrWhiteSpace(config.FileSystem.OpenSearchHome))
 				environmentVariables.Add("OPENSEARCH_HOME", config.FileSystem.OpenSearchHome);
 
+			environmentVariables.Add("ES_JAVA_OPTS", "-Xms1g -Xmx1g");
+			if (!string.IsNullOrWhiteSpace(config.FileSystem.ConfigPath))
+				environmentVariables.Add(config.FileSystem.ConfigEnvironmentVariableName.Replace("OPENSEARCH", "ES"), config.FileSystem.ConfigPath);
+
+			if (!string.IsNullOrWhiteSpace(config.FileSystem.OpenSearchHome))
+				environmentVariables.Add("ES_HOME", config.FileSystem.OpenSearchHome);
+
 			return environmentVariables;
 		}
 

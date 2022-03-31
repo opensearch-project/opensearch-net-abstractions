@@ -189,7 +189,9 @@ namespace OpenSearch.OpenSearch.Ephemeral.Tasks
 				Environment = new Dictionary<string, string>
 				{
 					{config.FileSystem.ConfigEnvironmentVariableName, config.FileSystem.ConfigPath},
-					{"OPENSEARCH_HOME", config.FileSystem.OpenSearchHome}
+					{"OPENSEARCH_HOME", config.FileSystem.OpenSearchHome},
+					{config.FileSystem.ConfigEnvironmentVariableName.Replace("OPENSEARCH", "ES"), config.FileSystem.ConfigPath},
+					{"ES_HOME", config.FileSystem.OpenSearchHome}
 				}
 			};
 
