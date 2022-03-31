@@ -41,6 +41,7 @@ namespace OpenSearch.OpenSearch.Managed.Configuration
 		string ClusterName { get; }
 		NodeSettings DefaultNodeSettings { get; }
 		OpenSearchVersion Version { get; }
+		ServerType ServerType { get; }
 		int NumberOfNodes { get; }
 		int StartingPortNumber { get; set; }
 		bool NoCleanupAfterNodeStopped { get; set; }

@@ -34,6 +34,7 @@ using System.Threading;
 using OpenSearch.OpenSearch.Managed.Configuration;
 using OpenSearch.OpenSearch.Managed.ConsoleWriters;
 using OpenSearch.OpenSearch.Managed.FileSystem;
+using OpenSearch.Stack.ArtifactsApi;
 using ProcNet.Std;
 
 namespace OpenSearch.OpenSearch.Managed
@@ -118,7 +119,7 @@ namespace OpenSearch.OpenSearch.Managed
 		public IDisposable Start(TimeSpan waitForStarted)
 		{
 			var nodes = Nodes.Select(n => n.NodeConfiguration.DesiredNodeName).ToArray();
-			var lineHighlightWriter = new LineHighlightWriter(nodes, new LineOutParser());
+			var lineHighlightWriter = new LineHighlightWriter(nodes, LineOutParser.From(ClusterConfiguration.ServerType));
 			return Start(lineHighlightWriter, waitForStarted);
 		}
 

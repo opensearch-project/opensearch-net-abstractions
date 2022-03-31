@@ -27,11 +27,33 @@
 
 using System;
 using System.Text.RegularExpressions;
+using OpenSearch.OpenSearch.Managed.Configuration;
+using OpenSearch.Stack.ArtifactsApi;
 
 namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 {
 	public class LineOutParser
 	{
+		private LineOutParser() { }
+
+		public static LineOutParser OpenSearch = new() {ShortNamePrefix = "o.o", FullNamePrefix = "org.opensearch"};
+
+		public static LineOutParser OpenDistro = new() {ShortNamePrefix = "o.e", FullNamePrefix = "org.elastic"};
+		public static LineOutParser From(ServerType serverType)
+		{
+			switch (serverType)
+			{
+				case ServerType.OpenDistro:
+				case ServerType.ElasticSearch:
+					return LineOutParser.OpenDistro;
+				case ServerType.OpenSearch:
+					return LineOutParser.OpenSearch;
+				default:
+					throw new ApplicationException(
+						$"Unexpected value for {nameof(serverType)} -- {serverType}");
+			}
+		}
+
 /*
 [2016-09-26T11:43:17,314][INFO ][o.e.n.Node               ] [readonly-node-a9c5f4] initializing ...
 [2016-09-26T11:43:17,470][INFO ][o.e.e.NodeEnvironment    ] [readonly-node-a9c5f4] using [1] data paths, mounts [[BOOTCAMP (C:)]], net usable_space [27.7gb], net total_space [129.7gb], spins? [unknown], types [NTFS]
@@ -64,6 +86,9 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 		private readonly Regex InfoParser =
 			new Regex(@"version\[(?<version>.*)\], pid\[(?<pid>.*)\], build\[(?<build>.+)\]");
 
+		private String ShortNamePrefix { get; set; } = "o.o";
+		private String FullNamePrefix { get; set; } = "org.opensearch";
+
 		public bool TryParse(string line,
 			out string date, out string level, out string section, out string node, out string message,
 			out bool started)
@@ -76,7 +101,7 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 			if (!match.Success) return false;
 			date = match.Groups["date"].Value.Trim();
 			level = match.Groups["level"].Value.Trim();
-			section = match.Groups["section"].Value.Trim().Replace("org.opensearch.", "");
+			section = match.Groups["section"].Value.Trim().Replace(FullNamePrefix + ".", "");
 			node = match.Groups["node"].Value.Trim();
 			message = match.Groups["message"].Value.Trim();
 			started = TryGetStartedConfirmation(section, message);
@@ -93,11 +118,11 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 		{
 			port = 0;
 			var inHttpSection =
-				section == "o.o.h.HttpServer"
+				section == ShortName("h.HttpServer")
 				|| section == "http"
-				|| section == "o.o.h.AbstractHttpServerTransport"
-				|| section == "o.o.h.n.Netty4HttpServerTransport"
-				|| section == "o.o.x.s.t.n.SecurityNetty4HttpServerTransport";
+				|| section == ShortName("h.AbstractHttpServerTransport")
+				|| section == ShortName("h.n.Netty4HttpServerTransport")
+				|| section == ShortName("x.s.t.n.SecurityNetty4HttpServerTransport");
 			if (!inHttpSection) return false;
 
 			if (string.IsNullOrWhiteSpace(message)) return false;
@@ -112,7 +137,7 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 
 		public bool TryParseNodeInfo(string section, string message, out string version, out int? pid)
 		{
-			var inNodeSection = section == "o.o.n.Node" || section == "node";
+			var inNodeSection = section == ShortName("n.Node") || section == "node";
 
 			version = null;
 			pid = null;
@@ -125,5 +150,7 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 			pid = int.Parse(match.Groups["pid"].Value.Trim());
 			return true;
 		}
+
+		private string ShortName(string suffix) => $"{ShortNamePrefix}.{suffix}";
 	}
 }

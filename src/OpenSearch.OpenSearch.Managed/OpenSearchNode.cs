@@ -210,7 +210,7 @@ namespace OpenSearch.OpenSearch.Managed
 
 		protected override bool KeepBufferingLines(LineOut c)
 		{
-			var lineOutParser = new LineOutParser();
+			var lineOutParser = LineOutParser.From(NodeConfiguration.ServerType);
 			//if the node is already started only keep buffering lines while we have a writer and the nodeconfiguration wants output after started
 			if (NodeStarted)
 			{
