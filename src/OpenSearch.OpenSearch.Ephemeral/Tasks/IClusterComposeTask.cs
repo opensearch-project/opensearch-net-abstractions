@@ -136,17 +136,21 @@ namespace OpenSearch.OpenSearch.Ephemeral.Tasks
 				{
 					var response = verb(client, statusUrl, tokenSource.Token).ConfigureAwait(false).GetAwaiter()
 						.GetResult();
-					if (response.StatusCode == HttpStatusCode.OK) return response;
-					cluster.Writer.WriteDiagnostic(
-						$"{{{nameof(Call)}}} [{statusUrl}] Bad status code: [{(int) response.StatusCode}]");
-					var body = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-					foreach (var l in (body ?? string.Empty).Split('\n', '\r'))
-						cluster.Writer.WriteDiagnostic($"{{{nameof(Call)}}} [{statusUrl}] returned [{l}]");
+					if (!response.IsSuccessStatusCode)
+					{
+						cluster.Writer.WriteDiagnostic(
+							$"{{{nameof(Call)}}} [{statusUrl}] Unsuccessful status code: [{(int) response.StatusCode}]");
+						var body = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+						foreach (var l in (body ?? string.Empty).Split('\n', '\r'))
+							cluster.Writer.WriteDiagnostic($"{{{nameof(Call)}}} [{statusUrl}] returned [{l}]");
+					}
+
+					return response;
 				}
 				catch (Exception e)
 				{
 					cluster.Writer.WriteError($"{{{nameof(Call)}}} [{statusUrl}] exception: {e}");
-					// ignored
+					throw;
 				}
 				finally
 				{
@@ -155,8 +159,6 @@ namespace OpenSearch.OpenSearch.Ephemeral.Tasks
 #endif
 				}
 			}
-
-			return null;
 		}
 
 		private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate,
