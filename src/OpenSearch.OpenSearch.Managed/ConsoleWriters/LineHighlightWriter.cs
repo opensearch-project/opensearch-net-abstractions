@@ -53,7 +53,7 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 		{
 		}
 
-		public LineHighlightWriter(IList<String> nodes, LineOutParser lineOutParser)
+		public LineHighlightWriter(IList<string> nodes, LineOutParser lineOutParser)
 		{
 			_lineOutParser = lineOutParser ?? throw new NullReferenceException(nameof(lineOutParser));
 			if (nodes == null) throw new NullReferenceException(nameof(nodes));
