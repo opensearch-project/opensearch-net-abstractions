@@ -27,7 +27,6 @@
 
 using System;
 using System.Text.RegularExpressions;
-using OpenSearch.OpenSearch.Managed.Configuration;
 using OpenSearch.Stack.ArtifactsApi;
 
 namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
@@ -36,9 +35,11 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 	{
 		private LineOutParser() { }
 
-		public static LineOutParser OpenSearch = new() {ShortNamePrefix = "o.o", FullNamePrefix = "org.opensearch"};
+		public static readonly LineOutParser OpenSearch = new(shortNamePrefix: "o.o", fullNamePrefix: "org.opensearch",
+			securityPluginName: "OpenSearchSecurityPlugin");
 
-		public static LineOutParser OpenDistro = new() {ShortNamePrefix = "o.e", FullNamePrefix = "org.elastic"};
+		public static readonly LineOutParser OpenDistro = new(shortNamePrefix: "o.e", fullNamePrefix: "org.elastic",
+			securityPluginName: "OpenDistroSecurityPlugin");
 		public static LineOutParser From(ServerType serverType)
 		{
 			switch (serverType)
@@ -77,17 +78,25 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 [2016-09-26T11:43:22,179][INFO ][o.e.n.Node               ] [readonly-node-a9c5f4] initialized
 [2016-09-26T11:43:22,180][INFO ][o.e.n.Node               ] [readonly-node-a9c5f4] starting ...
 */
-		private readonly Regex ConsoleLineParser =
+		private static readonly Regex ConsoleLineParser =
 			new Regex(@"\[(?<date>.*?)\]\[(?<level>.*?)\](?:\[(?<section>.*?)\])(?: \[(?<node>.*?)\])? (?<message>.+)");
 
-		private readonly Regex PortParser = new Regex(@"bound_address(es)?(opensearch)? {.+\:(?<port>\d+)}");
+		private static readonly Regex PortParser = new Regex(@"bound_address(es)?(opensearch)? {.+\:(?<port>\d+)}");
 
 		//[2016-09-26T11:43:17,475][INFO ][o.e.n.Node               ] [readonly-node-a9c5f4] version[5.0.0-beta1], pid[13172], build[7eb6260/2016-09-20T23:10:37.942Z], OS[Windows 10/10.0/amd64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_101/25.101-b13]
-		private readonly Regex InfoParser =
+		private static readonly Regex InfoParser =
 			new Regex(@"version\[(?<version>.*)\], pid\[(?<pid>.*)\], build\[(?<build>.+)\]");
 
-		private String ShortNamePrefix { get; set; } = "o.o";
-		private String FullNamePrefix { get; set; } = "org.opensearch";
+		private LineOutParser(string shortNamePrefix, string fullNamePrefix, string securityPluginName) : this()
+		{
+			_shortNamePrefix = shortNamePrefix;
+			_fullNamePrefix = fullNamePrefix;
+			_securityPluginRegex = new Regex(securityPluginName);
+		}
+
+		private readonly Regex _securityPluginRegex;
+		private readonly string _shortNamePrefix;
+		private readonly string _fullNamePrefix ;
 
 		public bool TryParse(string line,
 			out string date, out string level, out string section, out string node, out string message,
@@ -101,17 +110,19 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 			if (!match.Success) return false;
 			date = match.Groups["date"].Value.Trim();
 			level = match.Groups["level"].Value.Trim();
-			section = match.Groups["section"].Value.Trim().Replace(FullNamePrefix + ".", "");
+			section = match.Groups["section"].Value.Trim().Replace(_fullNamePrefix + ".", "");
 			node = match.Groups["node"].Value.Trim();
 			message = match.Groups["message"].Value.Trim();
 			started = TryGetStartedConfirmation(section, message);
 			return true;
 		}
 
-		private bool TryGetStartedConfirmation(string section, string message, string node)
+
+		private bool TryGetStartedConfirmation(string section, string message)
 		{
-			var inNodeSection = section == "o.e.n.Node" || section == "node";
-			return inNodeSection && message == "started";
+
+			var inNodeSection = _securityPluginRegex.IsMatch(section);
+			return inNodeSection && message == "Node started";
 		}
 
 		public bool TryGetPortNumber(string section, string message, out int port)
@@ -151,6 +162,6 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 			return true;
 		}
 
-		private string ShortName(string suffix) => $"{ShortNamePrefix}.{suffix}";
+		private string ShortName(string suffix) => $"{_shortNamePrefix}.{suffix}";
 	}
 }
