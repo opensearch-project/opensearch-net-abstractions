@@ -91,7 +91,7 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 		{
 			_shortNamePrefix = shortNamePrefix;
 			_fullNamePrefix = fullNamePrefix;
-			_securityPluginRegex = new Regex(securityPluginName);
+			_securityPluginRegex = new Regex(Regex.Escape(securityPluginName));
 		}
 
 		private readonly Regex _securityPluginRegex;
