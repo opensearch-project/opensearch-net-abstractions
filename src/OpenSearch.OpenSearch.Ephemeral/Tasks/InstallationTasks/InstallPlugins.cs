@@ -93,10 +93,21 @@ namespace OpenSearch.OpenSearch.Ephemeral.Tasks.InstallationTasks
 					cluster.Writer,
 					fs.PluginBinary,
 					$"install opensearch plugin: {plugin.SubProductName}",
-					"install --batch", plugin.SubProductName);
+					"install --batch", GetPluginLocation(plugin, v));
 
 				CopyConfigDirectoryToHomeCacheConfigDirectory(cluster, plugin);
 			}
+		}
+
+		private static string GetPluginLocation(OpenSearchPlugin plugin, OpenSearchVersion v)
+		{
+			// OpenSearch 1.0.0 artifacts were not published. The plugins are built in the workflow and used here.
+			if (v == "1.0.0")
+				// The environment variable is set in the integration workflow in
+				// https://github.com/opensearch-project/opensearch-net/blob/main/.github/workflows/integration.yml
+				return "file://" + Environment.GetEnvironmentVariable("plugins-directory") + $"/{plugin.SubProductName}-{v}.zip";
+			else
+				return plugin.SubProductName;
 		}
 
 		private static void CopyConfigDirectoryToHomeCacheConfigDirectory(
