@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{F75ACC18
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenSearch.Stack.ArtifactsApiTests", "src\OpenSearch.Stack.ArtifactsApiTests\OpenSearch.Stack.ArtifactsApiTests.csproj", "{549E265F-2D60-4993-8993-A18AE1771A9A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenSearch.OpenSearch.EphemeralTests", "src\OpenSearch.OpenSearch.EphemeralTests\OpenSearch.OpenSearch.EphemeralTests.csproj", "{B6DC6BD5-5D7A-4793-B82D-64EBE0F0DED5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{549E265F-2D60-4993-8993-A18AE1771A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{549E265F-2D60-4993-8993-A18AE1771A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{549E265F-2D60-4993-8993-A18AE1771A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6DC6BD5-5D7A-4793-B82D-64EBE0F0DED5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6DC6BD5-5D7A-4793-B82D-64EBE0F0DED5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6DC6BD5-5D7A-4793-B82D-64EBE0F0DED5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6DC6BD5-5D7A-4793-B82D-64EBE0F0DED5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{F5D3D2D7-CDA1-462A-81FD-A446C4CEB287} = {77E78EDE-60D5-469A-B431-443A7966A243}
 		{681C6112-B885-4553-A06C-4CD9C262FC49} = {77E78EDE-60D5-469A-B431-443A7966A243}
 		{80DE8673-CB3E-4D0B-99F4-A5CECF6BE752} = {77E78EDE-60D5-469A-B431-443A7966A243}
+		{B6DC6BD5-5D7A-4793-B82D-64EBE0F0DED5} = {77E78EDE-60D5-469A-B431-443A7966A243}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AFADDCED-A7DD-43E7-B03C-27F57AC5C358}

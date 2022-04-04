@@ -35,6 +35,8 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 {
 	public class LineHighlightWriter : IConsoleLineHandler
 	{
+		private readonly LineOutParser _lineOutParser;
+
 		private static readonly ConsoleColor[] AvailableNodeColors =
 		{
 			ConsoleColor.DarkGreen, ConsoleColor.DarkBlue, ConsoleColor.DarkRed, ConsoleColor.DarkCyan,
@@ -51,8 +53,11 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 		{
 		}
 
-		public LineHighlightWriter(IList<string> nodes)
+		public LineHighlightWriter(IList<string> nodes, LineOutParser lineOutParser)
 		{
+			_lineOutParser = lineOutParser ?? throw new NullReferenceException(nameof(lineOutParser));
+			if (nodes == null) throw new NullReferenceException(nameof(nodes));
+
 			var colors = new Dictionary<string, ConsoleColor>();
 			for (var i = 0; i < nodes.Count; i++)
 			{
@@ -76,7 +81,7 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 
 		public void Handle(LineOut lineOut)
 		{
-			var parsed = LineOutParser.TryParse(lineOut.Line, out var date, out var level, out var section,
+			var parsed = _lineOutParser.TryParse(lineOut.Line, out var date, out var level, out var section,
 				out var node, out var message, out _);
 			if (parsed) Write(lineOut.Error, date, level, section, node, message, NodeColor);
 			else if (ExceptionLineParser.TryParseCause(lineOut.Line, out var cause, out var causeMessage))

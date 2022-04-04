@@ -41,6 +41,7 @@ namespace OpenSearch.OpenSearch.Managed.Configuration
 		string ClusterName { get; }
 		NodeSettings DefaultNodeSettings { get; }
 		OpenSearchVersion Version { get; }
+		ServerType ServerType { get; }
 		int NumberOfNodes { get; }
 		int StartingPortNumber { get; set; }
 		bool NoCleanupAfterNodeStopped { get; set; }
@@ -86,6 +87,7 @@ namespace OpenSearch.OpenSearch.Managed.Configuration
 
 			ClusterName = clusterName;
 			Version = version;
+			ServerType = serverType;
 			Artifact = version.Artifact(Product.From("opensearch", serverType: serverType));
 			FileSystem = fileSystem(Version, ClusterName);
 			NumberOfNodes = numberOfNodes;
@@ -109,6 +111,7 @@ namespace OpenSearch.OpenSearch.Managed.Configuration
 
 		public string ClusterName { get; }
 		public OpenSearchVersion Version { get; }
+		public ServerType ServerType { get; }
 		public TFileSystem FileSystem { get; }
 		public int NumberOfNodes { get; }
 		public int StartingPortNumber { get; set; } = 9200;

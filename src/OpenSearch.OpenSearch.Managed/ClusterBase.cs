@@ -34,6 +34,7 @@ using System.Threading;
 using OpenSearch.OpenSearch.Managed.Configuration;
 using OpenSearch.OpenSearch.Managed.ConsoleWriters;
 using OpenSearch.OpenSearch.Managed.FileSystem;
+using OpenSearch.Stack.ArtifactsApi;
 using ProcNet.Std;
 
 namespace OpenSearch.OpenSearch.Managed
@@ -115,9 +116,12 @@ namespace OpenSearch.OpenSearch.Managed
 
 		public IDisposable Start() => Start(TimeSpan.FromMinutes(2));
 
-		public IDisposable Start(TimeSpan waitForStarted) =>
-			Start(new LineHighlightWriter(Nodes.Select(n => n.NodeConfiguration.DesiredNodeName).ToArray()),
-				waitForStarted);
+		public IDisposable Start(TimeSpan waitForStarted)
+		{
+			var nodes = Nodes.Select(n => n.NodeConfiguration.DesiredNodeName).ToArray();
+			var lineHighlightWriter = new LineHighlightWriter(nodes, LineOutParser.From(ClusterConfiguration.ServerType));
+			return Start(lineHighlightWriter, waitForStarted);
+		}
 
 		public IDisposable Start(IConsoleLineHandler writer, TimeSpan waitForStarted)
 		{
@@ -134,6 +138,17 @@ namespace OpenSearch.OpenSearch.Managed
 				var nodeExceptions = Nodes.Select(n => n.LastSeenException).Where(e => e != null).ToList();
 				writer?.WriteError(
 					$"{{{GetType().Name}.{nameof(Start)}}} cluster did not start after {waitForStarted}");
+				throw new AggregateException($"Not all nodes started after waiting {waitForStarted}", nodeExceptions);
+			}
+
+			Started = Nodes.All(n => n.NodeStarted);
+			if (!Started)
+			{
+				var nodeExceptions = Nodes.Select(n => n.LastSeenException).Where(e => e != null).ToList();
+				var message = $"{{{GetType().Name}.{nameof(Start)}}} cluster did not start successfully";
+				var seeLogsMessage = SeeLogsMessage(message);
+				writer?.WriteError(seeLogsMessage);
+				throw new AggregateException(seeLogsMessage, nodeExceptions);
 			}
 
 			try
