@@ -48,7 +48,7 @@ namespace OpenSearch.OpenSearch.Ephemeral.Tasks.InstallationTasks
 			var script = Path.Combine(fs.OpenSearchHome, "server-initial-config.sh");
 
 			if (cluster.ClusterConfiguration.Artifact.ServerType == ServerType.OpenSearch)
-				File.WriteAllText(script, InitialConfigurationOpenSearch.GetConfigurationScript());
+				File.WriteAllText(script, InitialConfigurationOpenSearch.GetConfigurationScript(cluster.ClusterConfiguration.Version));
 			if (cluster.ClusterConfiguration.Artifact.ServerType == ServerType.OpenDistro)
 				File.WriteAllText(script, InitialConfigurationOpenDistro.GetConfigurationScript());
 
