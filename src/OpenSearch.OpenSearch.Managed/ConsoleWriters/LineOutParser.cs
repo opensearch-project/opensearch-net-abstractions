@@ -117,7 +117,6 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 			return true;
 		}
 
-
 		private bool TryGetStartedConfirmation(string section, string message)
 		{
 
