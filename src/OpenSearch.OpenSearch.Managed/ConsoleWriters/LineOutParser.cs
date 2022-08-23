@@ -119,9 +119,7 @@ namespace OpenSearch.OpenSearch.Managed.ConsoleWriters
 
 		private bool TryGetStartedConfirmation(string section, string message)
 		{
-
-			var inNodeSection = _securityPluginRegex.IsMatch(section);
-			return inNodeSection && message == "Node started";
+			return section == ShortName("n.Node") && message == "started";
 		}
 
 		public bool TryGetPortNumber(string section, string message, out int port)
