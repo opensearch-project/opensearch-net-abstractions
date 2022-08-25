@@ -53,7 +53,8 @@ namespace OpenSearch.OpenSearch.Xunit.XunitPlumbing
 					: new IXunitTestCase[] {new SkippingTestCase(skipReason, testMethod, null)}
 				: new[]
 				{
-					new XunitTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod)
+					new XunitTestCase(DiagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(),
+						discoveryOptions.MethodDisplayOptionsOrDefault(), testMethod)
 				};
 
 		/// <summary>
