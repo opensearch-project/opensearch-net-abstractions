@@ -5,11 +5,11 @@
     - [OpenSearch.OpenSearch.Ephemeral](#opensearchopensearchephemeral)
     - [OpenSearch.OpenSearch.Xunit](#opensearchopensearchxunit)
     - [OpenSearch.Stack.ArtifactsApi](#opensearchstackartifactsapi)
-  - [Project Resources](#project-resources)
-  - [Code of Conduct](#code-of-conduct)
-  - [Security](#security)
-  - [License](#license)
-  - [Copyright](#copyright)
+- [Project Resources](#project-resources)
+- [Code of Conduct](#code-of-conduct)
+- [Security](#security)
+- [License](#license)
+- [Copyright](#copyright)
 
 ## Welcome!
 
