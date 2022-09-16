@@ -17,7 +17,9 @@
 
 You've reached the home repository for several auxiliary projects from the .NET team within OpenSearch.
 
-Pre-release packages of these projects are available at [OpenSearch NuGet Package Repository](https://www.github.com/opensearch-project/packages). See [GitHub documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#installing-a-package) for instructions on how to access them.
+Pre-release packages of these projects are copied into [OpenSearch NuGet Package Repository](https://www.github.com/opensearch-project/opensearch-net/abstractions).
+
+**This repo is unmaintained** since [.Net client PR #92](https://github.com/opensearch-project/opensearch-net/pull/92) merged. All further contributions and issues should be done in the [OpenSearch .Net client repository](https://www.github.com/opensearch-project/opensearch-net/).
 
 Current projects:
 
